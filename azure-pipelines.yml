@@ -1,5 +1,7 @@
 variables:
   buildConfiguration: 'Release'
+  dockerRegistry: 'eyalsegaldev'
+  dockerRepository: 'dotnet-app'
 
 trigger:
 - master
@@ -8,14 +10,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
@@ -34,7 +28,12 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
-- task: PublishBuildArtifacts@1
+- task: Docker@2
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
+    containerRegistry: $(dockerRegistry)
+    repository: $(dockerRepository)
+    command: 'build'
+    Dockerfile: 'Dockerfile'
+    buildContext: '.'
+    tags: |
+      $(dockerRegistry)/$(dockerRepository):$(Build.BuildId)
