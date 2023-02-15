@@ -1,3 +1,8 @@
+variables:
+  buildConfiguration: 'Release'
+  dockerRegistry: 'docker'
+  dockerRepository: 'dotnet-app'
+
 trigger:
 - master
 
@@ -6,7 +11,6 @@ pool:
 
 strategy:
   maxParallel: "1"
-
 
 steps:
 - task: DotNetCoreCLI@2
