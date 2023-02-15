@@ -1,6 +1,6 @@
 variables:
   buildConfiguration: 'Release'
-  dockerRegistry: 'eyalsegaldev'
+  dockerRegistry: 'docker'
   dockerRepository: 'dotnet-app'
 
 trigger:
